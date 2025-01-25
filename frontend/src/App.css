@@ -6,7 +6,6 @@
 body{
   height: 100vh;
   background-color: rgba(244, 244, 244, 0.934);
-  overflow-y: hidden;
 }
 /* Por el momento mantengamos ese color */
 .auth-container{
@@ -24,6 +23,7 @@ body{
 .main-container{
   width: 75%;
   margin: 30px auto 0;
+  padding-bottom: 39px;
 }
 .search-container{
   display: flex;
@@ -33,10 +33,10 @@ body{
 }
 .search-container  h1{
   font-size: 2rem;
-  color: #5771ff;
+  color: #2051d8;
 }
 .search-container span.craft{
-  color: #0958d9; /*Por el momento*/
+  color: #2c1574; /*Está mejor */
 }
 .user-container{
   display: flex;
@@ -56,5 +56,5 @@ body{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }

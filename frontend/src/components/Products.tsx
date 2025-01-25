@@ -60,7 +60,7 @@ function Products() {
           </Button>
       </div>
       <Table<DataType>
-        style={{borderRadius: '10px', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)', padding: '20px', background: '#FFF'}}
+        style={{borderRadius: '10px', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)', padding: '20px 20px 10px', background: '#FFF'}}
         rowSelection={{ type: "checkbox", ...rowSelection }}
         columns={columns}
         dataSource={data}
