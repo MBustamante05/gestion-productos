@@ -1,10 +1,12 @@
 import { Col, Form, Input, InputNumber, message, Modal, Row } from "antd";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import axiosInstance from "../utils/axiosInstance";
+import { DataType } from "../types/dataType";
 
 type Props = {
   setShowModel: Dispatch<SetStateAction<boolean>>;
   isModalOpen: boolean;
+  selectedProduct: DataType | null;
 };
 type FormValues = {
   name: string;
@@ -13,7 +15,7 @@ type FormValues = {
   category: string;
   description: string;
 };
-function AddProduct({ setShowModel, isModalOpen }: Props) {
+function AddProduct({ setShowModel, isModalOpen, selectedProduct }: Props) {
   const [form] = Form.useForm<FormValues>();
   const handleOk = () => {
     form.submit();
@@ -26,36 +28,58 @@ function AddProduct({ setShowModel, isModalOpen }: Props) {
   const handleAddProduct = async (values: FormValues) => {
     try {
       setShowModel(false);
-      await axiosInstance.post("/products/add", {
-        name: values.name,
-        price: values.price,
-        description: values.description,
-        category: values.category,
-        quantity: values.countInStock
-      });
-      message.success("Producto agregado correctamente!");
+      if (selectedProduct) {
+        await axiosInstance.put(`/products/update/${selectedProduct._id}`, {
+          name: values.name,
+          price: values.price,
+          description: values.description,
+          category: values.category,
+          quantity: values.countInStock,
+        });
+        message.success("Producto actualizado correctamente!");
+      } else {
+        await axiosInstance.post("/products/add", {
+          name: values.name,
+          price: values.price,
+          description: values.description,
+          category: values.category,
+          quantity: values.countInStock,
+        });
+        message.success("Producto agregado correctamente!");
+      }
     } catch (error) {
       const errorMessage =
-        error instanceof Error ? error.message : "No fue posible agregar el producto";
+        error instanceof Error
+          ? error.message
+          : "No fue posible agregar el producto";
       message.error(errorMessage);
     }
   };
+  useEffect(() => {
+    if (selectedProduct) {
+      form.setFieldsValue({
+        name: selectedProduct.name,
+        price: selectedProduct.price,
+        countInStock: selectedProduct.countInStock,
+        category: selectedProduct.category,
+        description: selectedProduct.description,
+      });
+    }else{
+      form.resetFields();
+    }
+  }, [selectedProduct, form]);
 
   return (
     <div>
       <Modal
-        title="Nuevo Producto"
+        title={selectedProduct ? "Editar Producto" : "Nuevo Producto"}
         open={isModalOpen}
-        okText="Agregar"
+        okText={selectedProduct ? "Actualizar" : "Agregar"}
         cancelText="Cancelar"
-        onOk={handleOk} 
+        onOk={handleOk}
         onCancel={handleCancel}
       >
-        <Form
-          layout="vertical"
-          onFinish={handleAddProduct} 
-          form={form} 
-        >
+        <Form layout="vertical" onFinish={handleAddProduct} form={form}>
           <Row gutter={[16, 16]}>
             <Col span={12}>
               <Form.Item
@@ -128,10 +152,7 @@ function AddProduct({ setShowModel, isModalOpen }: Props) {
               </Form.Item>
             </Col>
           </Row>
-          <Form.Item
-            label="Descripción"
-            name="description"
-          >
+          <Form.Item label="Descripción" name="description">
             <Input.TextArea
               placeholder="Ingresa la descripción del producto"
               showCount

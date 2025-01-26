@@ -31,6 +31,17 @@ export const getProducts = async (req, res) => {
   }
 }
 
+export const getProductById = async (req, res) => {
+  const productId = req.params.id;
+  try {
+    const product = await Product.findById(productId);
+    res.status(200).json(product);
+  } catch (error) {
+    console.error('Error getting product by ID: ', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+}
+
 export const updateProduct = async (req, res) => {
   try {
     const productId = req.params.id;
