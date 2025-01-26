@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
-import { Avatar, Input, message } from "antd";
+import { Avatar, Button, Input, message, Spin } from "antd";
 import { DownOutlined, SearchOutlined, UserOutlined } from "@ant-design/icons";
+
 import Products from "../components/Products";
 
 function HomePage() {
@@ -11,35 +12,62 @@ function HomePage() {
   const [userEmail, setUserEmail] = useState("");
   const [userName, setUserName] = useState("");
 
-  const authentication = async () => {
-    try {
-      setIsLoading(true);
-      const res = await axiosInstance.get("/users/profile");
-      const message = res.data.message;
-      if (message === "Success!") {
-        const { email, name } = res.data.user;
-        setUserEmail(email);
-        setUserName(name);
+  const [isClicked, setIsClicked] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setIsLoading(true);
+        const res = await axiosInstance.get("/users/profile");
+        const message = res.data.message;
+        if (message === "Success!") {
+          const { email, name } = res.data.user;
+          setUserEmail(email);
+          setUserName(name);
+          setIsLoading(false);
+        } else {
+          navigate("/login");
+          message.error("Usuario no autenticado");
+        }
+      } catch (err) {
         setIsLoading(false);
-      } else {
+        const errorMessage =
+          err instanceof Error ? err.message : "Error desconocido";
+        message.error(errorMessage);
         navigate("/login");
-        message.error("Usuario no autenticado");
       }
+    })();
+  }, [navigate]);
+
+  const handleLogout = async () => {
+    try {
+      await axiosInstance.post("/users/logout");
+      navigate("/login");
     } catch (err) {
-      setIsLoading(false);
       const errorMessage =
         err instanceof Error ? err.message : "Error desconocido";
       message.error(errorMessage);
-      navigate("/login");
+    } finally {
+      setIsClicked(false); 
     }
   };
-
-  useEffect(() => {
-    authentication();
-  }, []);
+  
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <Spin
+        style={{
+          position: "fixed",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
+        tip="Loading"
+        size="large"
+      >
+        <div></div>
+      </Spin>
+    );
   }
   return (
     <div className="main-container">
@@ -60,14 +88,18 @@ function HomePage() {
           placeholder="Buscar producto..."
           prefix={<SearchOutlined />}
         />
-        <div className="user-container">
+        <div className="user-container" onClick={() => setIsClicked(!isClicked)}>
           <Avatar icon={<UserOutlined />} />
           <div className="user-info">
             <p>{userName}</p>
             <small>{userEmail}</small>
           </div>
           <DownOutlined style={{ color: "#676767" }} />
+          <div className="logout">
+          <Button className="logout-btn" style={{display: isClicked ? "block" : "none"}} onClick={() => handleLogout()} color="default" variant="solid">Cerrar sesión</Button>
         </div>
+        </div>
+        
       </div>
       <Products />
     </div>

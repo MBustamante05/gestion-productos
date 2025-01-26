@@ -1,68 +1,84 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-body{
+body {
   height: 100vh;
   background-color: rgba(244, 244, 244, 0.934);
 }
 /* Por el momento mantengamos ese color */
-.auth-container{
+.auth-container {
   background-color: #ffffff;
   width: 370px;
   padding: 42px 25px;
   display: block;
   margin: 120px auto 0;
   border-radius: 10px;
-  box-shadow: 1px 0px 7px 0px rgba(0,0,0,0.1);
+  box-shadow: 1px 0px 7px 0px rgba(0, 0, 0, 0.1);
 }
 
 /* HOMEPAGE */
 
-.main-container{
+.main-container {
+  position: relative;
+  height: 100%;
   width: 75%;
   margin: 30px auto 0;
   padding-bottom: 39px;
 }
-.search-container{
+.search-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 40px;
 }
-.search-container  h1{
+.search-container h1 {
   font-size: 2rem;
   color: #2051d8;
 }
-.search-container span.craft{
+.search-container span.craft {
   color: #2c1574; /*Está mejor */
 }
-.user-container{
+.user-container {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 20px;
   cursor: pointer;
 }
-.user-info p{
+.user-info p {
   font-weight: 600;
 }
-.user-info small{
+.user-info small {
   color: #676767;
 }
 
-.add-product{
+.add-product {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
-.actions{
+.actions {
   display: flex;
   gap: 10px;
 }
-.specialInput{
+.specialInput {
   width: 100%;
   flex: 1;
+}
+
+/* LOGOUT */
+.logout {
+  position: absolute;
+  bottom: -40px;
+  right: 0;
+  border-radius: 10px;
+  z-index: 1;
+
+}
+.logout-button {
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
