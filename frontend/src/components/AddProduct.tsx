@@ -17,7 +17,6 @@ function AddProduct({ setShowModel, isModalOpen }: Props) {
   const [form] = Form.useForm<FormValues>();
   const handleOk = () => {
     form.submit();
-    setShowModel(false);
   };
 
   const handleCancel = () => {
@@ -26,6 +25,7 @@ function AddProduct({ setShowModel, isModalOpen }: Props) {
 
   const handleAddProduct = async (values: FormValues) => {
     try {
+      setShowModel(false);
       await axiosInstance.post("/products/add", {
         name: values.name,
         price: values.price,
@@ -48,13 +48,13 @@ function AddProduct({ setShowModel, isModalOpen }: Props) {
         open={isModalOpen}
         okText="Agregar"
         cancelText="Cancelar"
-        onOk={handleOk} // Llama a form.submit() aquí
+        onOk={handleOk} 
         onCancel={handleCancel}
       >
         <Form
           layout="vertical"
-          onFinish={handleAddProduct} // Maneja el envío del formulario
-          form={form} // Conecta la instancia del formulario
+          onFinish={handleAddProduct} 
+          form={form} 
         >
           <Row gutter={[16, 16]}>
             <Col span={12}>

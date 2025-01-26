@@ -1,9 +1,9 @@
 import React from "react";
 
 export interface DataType {
-  key: React.Key;
+  key?: React.Key;
   name: string;
-  productId: string;
+  _id: string;
   description: string;
   price: number;
   category: string;

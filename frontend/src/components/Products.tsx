@@ -3,8 +3,9 @@ import { Button, message, Popconfirm, Table } from "antd";
 import type { PopconfirmProps, TableColumnsType } from "antd";
 import { DataType } from "../types/dataType";
 import { data } from "../mocks/example";
-import { useState } from "react";
-import AddProduct from "./addProduct";
+import { useEffect, useState } from "react";
+import AddProduct from "./AddProduct";
+import axiosInstance from "../utils/axiosInstance";
 
 const cancel: PopconfirmProps["onCancel"] = (e) => {
   console.log(e);
@@ -18,7 +19,7 @@ const confirm: PopconfirmProps["onConfirm"] = (e) => {
 const columns: TableColumnsType<DataType> = [
   {
     title: "ID Producto",
-    dataIndex: "productId",
+    dataIndex: "_id",
   },
   {
     title: "Producto",
@@ -75,6 +76,19 @@ const columns: TableColumnsType<DataType> = [
 
 function Products() {
   const [showModel, setShowModel] = useState(false);
+  const [products, setProducts] = useState<DataType[]>(data);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await axiosInstance.get("/products");
+        setProducts(res.data);
+      } catch (error) {
+        message.error("No se pudo cargar los productos: " + error);
+      }
+    })();
+
+  },[products])
   return (
     <div>
       <div className="add-product">
@@ -92,7 +106,7 @@ function Products() {
           background: "#FFF",
         }}
         columns={columns}
-        dataSource={data}
+        dataSource={products.map((product, index) => ({ ...product, key: index }))}
       />
     </div>
   );
