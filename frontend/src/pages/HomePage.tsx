@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
-import { Avatar, Button, Input, message, Spin } from "antd";
-import { DownOutlined, SearchOutlined, UserOutlined } from "@ant-design/icons";
+import { Avatar, message, Spin } from "antd";
+import { DownOutlined, UserOutlined } from "@ant-design/icons";
 
 import Products from "../components/Products";
+import Logout from "../components/Logout";
 
 function HomePage() {
   const navigate = useNavigate();
@@ -39,20 +40,6 @@ function HomePage() {
     })();
   }, [navigate]);
 
-  const handleLogout = async () => {
-    try {
-      await axiosInstance.post("/users/logout");
-      navigate("/login");
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Error desconocido";
-      message.error(errorMessage);
-    } finally {
-      setIsClicked(false); 
-    }
-  };
-  
-
   if (isLoading) {
     return (
       <Spin
@@ -73,33 +60,20 @@ function HomePage() {
     <div className="main-container">
       <div className="search-container">
         <h1>
-          Code<span className="craft">Craft</span>
+          Gestion<span className="craft">Products</span>
         </h1>
-        <Input
-          style={{
-            width: 500,
-            border: "none",
-            background: "#FFF",
-            borderRadius: "20px",
-            padding: "10px",
-            boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
-          }}
-          size="large"
-          placeholder="Buscar producto..."
-          prefix={<SearchOutlined />}
-        />
-        <div className="user-container" onClick={() => setIsClicked(!isClicked)}>
+        <div
+          className="user-container"
+          onClick={() => setIsClicked(!isClicked)}
+        >
           <Avatar icon={<UserOutlined />} />
           <div className="user-info">
             <p>{userName}</p>
             <small>{userEmail}</small>
           </div>
           <DownOutlined style={{ color: "#676767" }} />
-          <div className="logout">
-          <Button className="logout-btn" style={{display: isClicked ? "block" : "none"}} onClick={() => handleLogout()} color="default" variant="solid">Cerrar sesión</Button>
+          <Logout isClicked={isClicked} setIsClicked={setIsClicked} />
         </div>
-        </div>
-        
       </div>
       <Products />
     </div>

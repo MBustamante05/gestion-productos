@@ -2,7 +2,6 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Button, message, Table } from "antd";
 import type { TableColumnsType } from "antd";
 import { DataType } from "../types/dataType";
-import { data } from "../mocks/example";
 import { useEffect, useState } from "react";
 import AddProduct from "./AddProduct";
 import axiosInstance from "../utils/axiosInstance";
@@ -49,7 +48,7 @@ const columns: TableColumnsType<DataType> = [
 
 function Products() {
   const [showModel, setShowModel] = useState(false);
-  const [products, setProducts] = useState<DataType[]>(data);
+  const [products, setProducts] = useState<DataType[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<DataType | null>(null);
 
   useEffect(() => {
