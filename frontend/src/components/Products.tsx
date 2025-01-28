@@ -114,6 +114,7 @@ function Products() {
           ...product,
           key: index,
         }))}
+        scroll={{ x: 500 }}
       />
     </div>
   );

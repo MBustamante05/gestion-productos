@@ -82,3 +82,28 @@ body {
 .logout-button {
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
+
+/* RESPONSIVE */
+@media screen and (max-width: 1268px) {
+  .main-container {
+    width: 90%;
+  }
+}
+@media screen and (max-width: 768px) {
+  .main-container {
+    width: 95%;
+  }
+  .search-container h1 {
+    font-size: 1.6rem;
+  }
+  .user-info p {
+    font-size: 0.9rem;
+  }
+  .user-info small {
+    font-size: 0.8rem;
+  }
+  .avatar {
+    width: 30px;
+    height: 30px;
+  }
+}

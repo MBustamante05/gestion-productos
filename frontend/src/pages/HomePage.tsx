@@ -66,7 +66,7 @@ function HomePage() {
           className="user-container"
           onClick={() => setIsClicked(!isClicked)}
         >
-          <Avatar icon={<UserOutlined />} />
+          <Avatar icon={<UserOutlined />} className="avatar" />
           <div className="user-info">
             <p>{userName}</p>
             <small>{userEmail}</small>
