@@ -21,11 +21,7 @@ Antes de comenzar, asegúrate de tener instalados:
    git clone https://github.com/MBustamante05/gestion-productos
    cd gestion-productos
    ```
-2. Navega al directorio del backend:
-   ```bash
-   cd backend
-   ```
-3. Instala las dependencias:
+2. Instala las dependencias:
    ```bash
    npm install
    ```
